@@ -43,7 +43,13 @@ class ChatViewController: UIViewController {
 
         self.senderId =  UserManager().userNumber()
         configureUI()
+        
+        refreshDataSource()
         configureChatDataSource()
+    }
+    
+    func refreshDataSource()  {
+        self.messages =  CoreDataManager.sharedManager.fetchMessagesForChatId(chatId: (self.chat?.chatId)!)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,8 +84,7 @@ class ChatViewController: UIViewController {
         chatDataSource.dataFromChannelId( completionHandler: {[unowned self]  messagesArray -> () in
             DispatchQueue.main.async {
                 guard let message = messagesArray.last else {return}
-                
-                self.messages.append(message)
+                self.refreshDataSource()
                 self.chatTableView.reloadData()
             }
         })

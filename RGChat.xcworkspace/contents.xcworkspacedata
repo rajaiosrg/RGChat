@@ -2,6 +2,18 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:RGChat/CoreData/Message+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:RGChat/CoreData/Message+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:RGChat/CoreData/Chat+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:RGChat/CoreData/Chat+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:RGChat.xcodeproj">
    </FileRef>
    <FileRef

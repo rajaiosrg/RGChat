@@ -29,6 +29,9 @@ class ConversationsViewController: UIViewController {
         
         title = "Chats"
         
+        tableView.delegate = self
+        tableView.dataSource = self
+
         setRightNavigationButton()
 
         activityIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: .gray)
@@ -37,8 +40,13 @@ class ConversationsViewController: UIViewController {
         
         observeChats()
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        refreshDataSource()
+        
+    }
+    
+    func  refreshDataSource() {
+        chats = CoreDataManager.sharedManager.fetchChats()
+        self.tableView.reloadData()
     }
     
     func setRightNavigationButton()  {
@@ -116,20 +124,18 @@ class ConversationsViewController: UIViewController {
     }
     
     private func observeChats() {
-        activityIndicator.startAnimating()
+
         chatRefHandle = chatRef.observe(.childAdded, with: { [unowned self] (snapshot) -> Void in
             let chatData = snapshot.value as! Dictionary<String, AnyObject>
             let id = snapshot.key
-            guard let number = chatData["number"] as! String? else {
-                print("number shuould not be empty")
-                return
-            }
-            if let name = chatData["name"] as! String?, name.count > 0 {
-                self.chats.append(OneToOneChat(chatId : id, name : name, number : number))
-                self.tableView.reloadData()
-            } else {
-                print("Error! Could not decode channel data")
-            }
+            let name = chatData["name"] as! String?
+            let number = chatData["number"] as! String?
+            let chatDataDict : [String : Any] = ["name":name ?? "","number":number ?? "","chatId":id]
+        
+        CoreDataManager.sharedManager.insertChatWithProperties(propertyDict: chatDataDict){
+               [unowned self] chat in
+            self.refreshDataSource()
+        }
             self.activityIndicator.stopAnimating()
         })
     }
@@ -139,7 +145,7 @@ class ConversationsViewController: UIViewController {
         let chatViewController = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
         chatViewController.senderDisplayName = senderDisplayName
         chatViewController.chat = chat
-        chatViewController.chatRef = chatRef.child(chat.chatId)
+        chatViewController.chatRef = chatRef.child(chat.chatId!)
 
         self.navigationController?.pushViewController(chatViewController, animated: true)
     }

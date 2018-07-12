@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum MessageType : String {
+    case None = "none", Text = "text", Image = "image"
+    
+    static let allValues = [None, Text, Image]
+}
+
 struct Sender {
     var senderId : String
     var senderDisplayName : String

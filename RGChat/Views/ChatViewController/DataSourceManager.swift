@@ -46,14 +46,15 @@ class DataSourceManager {
         let messageQuery = messageRef.queryLimited(toLast:25)
         
         newMessageRefHandle = messageQuery.observe(.childAdded, with: { [unowned self]  (snapshot) -> Void in
-            let messageData = snapshot.value as! Dictionary<String, String>
+            var messageData = snapshot.value as! Dictionary<String, String>
             
             if (!messageData.isEmpty) {
-                let messageObj = Message()
-                messageObj.initWithMessageData(messageData: messageData)
-                self.messages.append(messageObj)
+                messageData["messageId"] = snapshot.key
                 
-                self.messageCompletionhandler!(self.messages)
+                CoreDataManager.sharedManager.insertMessageWithProperties(forChatId: self.channelId, propertyDict: messageData) { [unowned self] insertedMessage in
+                    self.messages.append(insertedMessage)
+                    self.messageCompletionhandler!(self.messages)
+                }
             } else {
                 print("Error! Could not decode message data")
             }

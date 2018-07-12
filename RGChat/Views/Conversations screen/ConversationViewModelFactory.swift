@@ -11,13 +11,8 @@ import Foundation
 class ConversationViewModelFactory {
     
     func viewModelForChat(_ chat : Chat) -> ConversationViewModelProtocol? {
-        if chat is OneToOneChat  {
             let viewModel = OneToOneViewModel()
             viewModel.viewModelWithContentModel(chat: chat)
             return viewModel
-        } else {
-            //For non group cases
-            return  nil
-        }
     }
 }

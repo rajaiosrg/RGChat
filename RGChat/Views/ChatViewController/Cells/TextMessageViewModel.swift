@@ -18,7 +18,7 @@ class TextMessageViewModel : ChatViewModelProtocol {
     func viewModelWithContentModel(messageModel : Message) {
         message = messageModel
         cellIdentifier = "TextMessageTableViewCell"
-        messageText = messageModel.text
+        messageText = messageModel.text!
         let currentSenderId =  UserManager().userNumber()
 
         isInComing = messageModel.senderId != currentSenderId

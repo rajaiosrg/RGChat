@@ -9,7 +9,8 @@
 import Foundation
 
 class ChatViewDataSource {
-    
+
+
     var dataSourceManager : DataSourceManager!
     var channelId : String
     var senderId : String

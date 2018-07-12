@@ -12,7 +12,7 @@ class ChatViewModelFactory {
     
     func viewModelForMessage(_ message : Message) -> ChatViewModelProtocol? {
 
-        if message.messageType == .Text {
+        if message.messageType == MessageType.Text.rawValue {
             let viewModel = TextMessageViewModel()
             viewModel.viewModelWithContentModel(messageModel : message)
             return viewModel
