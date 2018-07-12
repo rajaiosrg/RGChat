@@ -12,14 +12,15 @@ class ChatTableViewCell: UITableViewCell {
 
     var messageLabel : UILabel!
     var bubbleView : UIView!
-
-    let labelHeight: CGFloat = 24
-    let minYOffSet : CGFloat = 5
-    let nameLeftSpacing : CGFloat = 10
+    var isIncomingMessage : Bool = false
+    
     
     var messageTextLableLeftSpacing : CGFloat = 15
-        var bubbleViewExtraSpacing : CGFloat = 20
-    var isIncomingMessage : Bool = false
+    var bubbleViewExtraSpacing : CGFloat = 20
+    var minimumPaddingForBubbleView : CGFloat = 40
+    var minimumForBubbleViewWidth : CGFloat = 110
+    var bubbleViewTopSpacing : CGFloat = 5
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -54,22 +55,22 @@ class ChatTableViewCell: UITableViewCell {
         let cellHeight = self.contentView.frame.size.height
         let sreenSize : CGRect = UIScreen.main.bounds
         let bubbleSize : CGSize = CGSize(width: sreenSize.width * 0.85, height: cellHeight * 0.85)
-        let bubbleViewMinX = self.isIncomingMessage ? 5 : (sreenSize.width - bubbleSize.width) - 5
+        let bubbleViewMinX = self.isIncomingMessage ? bubbleViewTopSpacing : (sreenSize.width - bubbleSize.width) - 5
         
         let messageHeight : CGFloat = messageString.height(withConstrainedWidth: bubbleSize.width - messageTextLableLeftSpacing*2, font: messageLabel.font)
         
         let messageWidth : CGFloat = messageString.width(withConstrainedHeight: bubbleSize.width - messageTextLableLeftSpacing*2, font: messageLabel.font)
 
-        let bubbleViewRightMargin = max((sreenSize.width - (messageWidth + 20 + 20)), 100)
+        let bubbleViewRightMargin = max((sreenSize.width - (messageWidth  + minimumPaddingForBubbleView)), minimumForBubbleViewWidth)
         
         bubbleView.layer.cornerRadius = bubbleSize.height/2
         bubbleView.layer.masksToBounds = true
         
         if self.isIncomingMessage {
-            bubbleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5).isActive = true
+            bubbleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: bubbleViewTopSpacing).isActive = true
             bubbleView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: bubbleViewMinX).isActive = true
             bubbleView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -bubbleViewRightMargin).isActive = true
-            bubbleView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
+            bubbleView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -bubbleViewTopSpacing*2).isActive = true
             
             bubbleView.heightAnchor.constraint(equalToConstant: messageHeight + bubbleViewExtraSpacing).isActive = true
             
@@ -79,10 +80,10 @@ class ChatTableViewCell: UITableViewCell {
             messageLabel.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: 0).isActive = true
             
         } else {
-            bubbleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5).isActive = true
+            bubbleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: bubbleViewTopSpacing).isActive = true
             bubbleView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: bubbleViewRightMargin).isActive = true
-            bubbleView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -5).isActive = true
-            bubbleView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
+            bubbleView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -bubbleViewTopSpacing).isActive = true
+            bubbleView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -bubbleViewTopSpacing*2).isActive = true
             
             bubbleView.heightAnchor.constraint(equalToConstant: messageHeight + bubbleViewExtraSpacing).isActive = true
             

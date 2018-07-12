@@ -21,6 +21,8 @@ class ConversationsViewController: UIViewController {
     private var chats: [Chat] = []
     private lazy var chatRef: DatabaseReference = Database.database().reference().child("chats")
     
+    var activityIndicator : UIActivityIndicatorView!
+    var activityIndicatorSize : CGFloat = 40
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,11 @@ class ConversationsViewController: UIViewController {
         title = "Chats"
         
         setRightNavigationButton()
+
+        activityIndicator = UIActivityIndicatorView.init(activityIndicatorStyle: .gray)
+        activityIndicator.frame = CGRect(x: self.view.frame.midX - activityIndicatorSize/2, y: self.view.frame.midY - activityIndicatorSize , width: 40, height: 40)
+        tableView.addSubview(activityIndicator)
+        
         observeChats()
         
         tableView.delegate = self
@@ -109,7 +116,8 @@ class ConversationsViewController: UIViewController {
     }
     
     private func observeChats() {
-        chatRefHandle = chatRef.observe(.childAdded, with: { (snapshot) -> Void in
+        activityIndicator.startAnimating()
+        chatRefHandle = chatRef.observe(.childAdded, with: { [unowned self] (snapshot) -> Void in
             let chatData = snapshot.value as! Dictionary<String, AnyObject>
             let id = snapshot.key
             guard let number = chatData["number"] as! String? else {
@@ -122,6 +130,7 @@ class ConversationsViewController: UIViewController {
             } else {
                 print("Error! Could not decode channel data")
             }
+            self.activityIndicator.stopAnimating()
         })
     }
     

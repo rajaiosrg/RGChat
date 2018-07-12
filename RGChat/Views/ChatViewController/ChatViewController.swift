@@ -75,7 +75,7 @@ class ChatViewController: UIViewController {
     func configureChatDataSource() {
         let chatData = ChatData(chatRef : chatRef, channelId:self.chat?.chatId, senderId : senderId)
         chatDataSource = ChatViewDataSource(chatData : chatData)
-        chatDataSource.dataFromChannelId( completionHandler: { messagesArray -> () in
+        chatDataSource.dataFromChannelId( completionHandler: {[unowned self]  messagesArray -> () in
             DispatchQueue.main.async {
                 guard let message = messagesArray.last else {return}
                 

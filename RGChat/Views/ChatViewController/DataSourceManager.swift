@@ -45,7 +45,7 @@ class DataSourceManager {
         messageRef = chatRef!.child("messages")
         let messageQuery = messageRef.queryLimited(toLast:25)
         
-        newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+        newMessageRefHandle = messageQuery.observe(.childAdded, with: { [unowned self]  (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
             
             if (!messageData.isEmpty) {
