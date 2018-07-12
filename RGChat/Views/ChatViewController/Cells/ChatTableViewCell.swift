@@ -58,13 +58,17 @@ class ChatTableViewCell: UITableViewCell {
         
         let messageHeight : CGFloat = messageString.height(withConstrainedWidth: bubbleSize.width - messageTextLableLeftSpacing*2, font: messageLabel.font)
         
+        let messageWidth : CGFloat = messageString.width(withConstrainedHeight: bubbleSize.width - messageTextLableLeftSpacing*2, font: messageLabel.font)
+
+        let bubbleViewRightMargin = max((sreenSize.width - (messageWidth + 20 + 20)), 100)
+        
         bubbleView.layer.cornerRadius = bubbleSize.height/2
         bubbleView.layer.masksToBounds = true
         
         if self.isIncomingMessage {
             bubbleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5).isActive = true
             bubbleView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: bubbleViewMinX).isActive = true
-            bubbleView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -(sreenSize.width - bubbleSize.width) - 5).isActive = true
+            bubbleView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -bubbleViewRightMargin).isActive = true
             bubbleView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
             
             bubbleView.heightAnchor.constraint(equalToConstant: messageHeight + bubbleViewExtraSpacing).isActive = true
@@ -76,7 +80,7 @@ class ChatTableViewCell: UITableViewCell {
             
         } else {
             bubbleView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5).isActive = true
-            bubbleView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: bubbleViewMinX).isActive = true
+            bubbleView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: bubbleViewRightMargin).isActive = true
             bubbleView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -5).isActive = true
             bubbleView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
             
