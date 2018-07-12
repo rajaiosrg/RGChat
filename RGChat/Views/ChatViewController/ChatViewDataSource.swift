@@ -7,7 +7,6 @@
 //
 
 import Foundation
-//import JSQMessagesViewController
 
 class ChatViewDataSource {
     
