@@ -1,0 +1,6 @@
+framework module Pods_RGChat {
+  umbrella header "Pods-RGChat-umbrella.h"
+
+  export *
+  module * { export * }
+}
